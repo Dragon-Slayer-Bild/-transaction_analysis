@@ -189,6 +189,7 @@ def currency_convert(curr_from: str, amount: int|float|str) -> float|None:
 
 def card_list(transactions_list):
     '''Получение списка карт с суммой расходов и кешбеком по карте за период'''
+
     logger = logging.getLogger("card_list")
     logger.setLevel(logging.DEBUG)
     file_handler = logging.FileHandler(

@@ -1,7 +1,7 @@
 from src.utils import stock_price,card_list,currency_list,top_transactions,file_reader,greeting,filter_transactions_in_data
 import json
 
-def main():
+def main_page_info():
     '''Функция для формирования Главной страницы'''
     transactions_list = filter_transactions_in_data(file_reader(),'01.01.2020')
     main_info = json.dumps({
@@ -12,5 +12,3 @@ def main():
         "stock_prices": stock_price()},
         indent=4, ensure_ascii=False)
     return main_info
-
-print(main())
