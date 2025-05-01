@@ -1,7 +1,9 @@
-from src.utils import currency_convert,stock_price
-from unittest.mock import Mock,patch
+from unittest.mock import Mock, patch
 
-transactions_list_test = [{
+from src.utils import currency_convert, stock_price
+
+transactions_list_test = [
+    {
         "Дата операции": "04.01.2018 15:00:41",
         "Статус": "OK",
         "Категория": "Каршеринг",
@@ -9,7 +11,7 @@ transactions_list_test = [{
         "Сумма операции": 1025.0,
         "Сумма платежа": 1025.0,
         "Описание": "Оплата денег",
-        "Кэшбэк": 'nan',
+        "Кэшбэк": "nan",
         "Бонусы (включая кэшбэк)": 20,
     },
     {
@@ -19,7 +21,7 @@ transactions_list_test = [{
         "Номер карты": "*7199",
         "Сумма операции": -25.0,
         "Сумма платежа": -25.0,
-        "Кэшбэк": 'nan',
+        "Кэшбэк": "nan",
         "Бонусы (включая кэшбэк)": 20,
     },
     {
@@ -29,7 +31,7 @@ transactions_list_test = [{
         "Номер карты": "*7197",
         "Сумма операции": -1065.9,
         "Сумма платежа": -1065.9,
-        "Кэшбэк": 'nan',
+        "Кэшбэк": "nan",
         "Бонусы (включая кэшбэк)": 21,
     },
     {
@@ -40,7 +42,7 @@ transactions_list_test = [{
         "Сумма операции": -73.06,
         "Сумма платежа": -73.06,
         "Описание": "Перевод денег",
-        "Кэшбэк": 'nan',
+        "Кэшбэк": "nan",
         "Бонусы (включая кэшбэк)": 1,
     },
     {
@@ -51,7 +53,7 @@ transactions_list_test = [{
         "Сумма операции": -21.0,
         "Сумма платежа": -21.0,
         "Описание": "Оплата за товар",
-        "Кэшбэк": 'nan',
+        "Кэшбэк": "nan",
         "Бонусы (включая кэшбэк)": 0,
     },
     {
@@ -62,37 +64,42 @@ transactions_list_test = [{
         "Сумма операции": -316.0,
         "Сумма платежа": -316.0,
         "Описание": "Перевод денег",
-        "Кэшбэк": 'nan',
+        "Кэшбэк": "nan",
         "Бонусы (включая кэшбэк)": 6,
     },
     {
         "Дата операции": "01.01.2018 12:49:53",
         "Статус": "Failed",
         "Категория": "Каршеринг",
-        "Номер карты": 'nan',
+        "Номер карты": "nan",
         "Сумма операции": -3000.0,
         "Сумма платежа": -3000.0,
         "Описание": "Перевод денег",
-        "Кэшбэк": 'nan',
+        "Кэшбэк": "nan",
         "Бонусы (включая кэшбэк)": 0,
-    }]
+    },
+]
 
 
-@patch('requests.request')
+@patch("requests.request")
 def test_currency_convert(mock_get):
-    mock_json_result = {'success': True, 'query': {'from': 'USD', 'to': 'RUB', 'amount': 100}, 'info': {'timestamp': 1745788084, 'quote': 82.589353}, 'result': 8258.9353}
+    mock_json_result = {
+        "success": True,
+        "query": {"from": "USD", "to": "RUB", "amount": 100},
+        "info": {"timestamp": 1745788084, "quote": 82.589353},
+        "result": 8258.9353,
+    }
 
     mock_json = Mock(return_value=mock_json_result)
     mock_get.return_value.json = mock_json
     mock_get.return_value.status_code = 200
-
 
     # Вызываем функцию currency_convert
     result = currency_convert("USD", 100)
     assert result == 8258.94
 
 
-@patch('requests.get')
+@patch("requests.get")
 def test_stock_price(mock_get):
 
     mock_json_result = {"p": 156.3}
@@ -101,16 +108,14 @@ def test_stock_price(mock_get):
     mock_get.return_value.json = mock_json
     mock_get.return_value.status_code = 200
 
-
     # Вызываем функцию currency_convert
     result = stock_price()
-    expected =[{'price': 156.3, 'stock': 'AAPL'},
-     {'price': 156.3, 'stock': 'GOOG'},
-     {'price': 156.3, 'stock': 'TSLA'}]
+    expected = [
+        {"price": 156.3, "stock": "AAPL"},
+        {"price": 156.3, "stock": "GOOG"},
+        {"price": 156.3, "stock": "TSLA"},
+    ]
     assert result == expected
-
-
-
 
 
 # transactions_list_test = [
@@ -181,8 +186,6 @@ def test_stock_price(mock_get):
 #
 
 
-
-
 # # responce = [{'success': True, 'terms': 'https://currencylayer.com/terms',
 # #       'privacy': 'https://currencylayer.com/privacy', 'timestamp': 1745528704, 'source': 'USD',
 # #       'quotes': {'USDRSD': 102.936075, 'USDRUB': 83.211592, 'USDRWF': 1426.984496}},
@@ -196,7 +199,9 @@ def test_stock_price(mock_get):
 # #             quotes.append({"currency":currency[:3],"rate": rate})
 #
 #
-# print(json.dumps({'greeting': greeting(),'cards': card_list(transactions_list), 'top_transactions': get_top_transactions(transactions_list), "currency_rates":currency_list(), "stock_prices": get_stock_price()}, indent=4, ensure_ascii=False))
+# print(json.dumps({'greeting': greeting(),'cards': card_list(transactions_list),
+# 'top_transactions': get_top_transactions(transactions_list),
+# "currency_rates":currency_list(), "stock_prices": get_stock_price()}, indent=4, ensure_ascii=False))
 #
 # Пример использования (в другом файле или в этом же для демонстрации)
 # if __name__ == '__main__':
