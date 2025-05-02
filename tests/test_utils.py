@@ -202,6 +202,7 @@ def mock_xlsx_transactions_file(tmp_path):
 
 @patch("requests.get")
 def test_stock_price_success(mock_get):
+    '''Успешный тест получения цен на акции'''
 
     mock_json_result = {"p": 156.3}
 
@@ -221,6 +222,7 @@ def test_stock_price_success(mock_get):
 
 @patch("requests.get")
 def test_stock_price_error(mock_get):
+    '''Неуспешный тест получения цен на акции'''
 
     mock_json_result = {"ошибка авторизации"}
 
@@ -235,6 +237,7 @@ def test_stock_price_error(mock_get):
 
 
 def test_stock_price_file_not_find():
+    '''Тест файл настроек не найден'''
     result = stock_price(filename="HEHEHE", dirname="data")
     assert result == []
 
@@ -249,7 +252,7 @@ def test_file_reader_success(mock_xlsx_transactions_file):
 
 
 def test_file_reader_error(tmp_path):
-    """Файл не найден."""
+    """Тест файл не найден."""
     result = file_reader(filename="ololol.csv", dirname=str(tmp_path))
     assert result == []
 
@@ -276,6 +279,7 @@ def test_greeting(hour, expected_greeting):
 
 
 def test_greeting_morning_boundary():
+    '''Тест успешный на проверуку пограничного значения'''
     with patch("src.utils.datetime") as mock_datetime:
         mock_datetime.datetime.now.return_value = datetime.datetime(2023, 1, 1, 6, 0, 0)
         result = greeting()
@@ -327,7 +331,7 @@ def test_top_transactions_success_no_curr_amount():
 
 
 def test_top_transactions_error():
-    """Тест успешный возврат топ 5 операций с пропуском операции без суммы и вылюты"""
+    """Тест неуспешный возврат топ 5 операций с пропуском операции без суммы и вылюты"""
 
     transactions_list_test = {"Сумма платежа": "Привет", "Валюта платежа": "RUB"}
 
@@ -356,7 +360,7 @@ def test_currency_convert_success(mock_get):
 
 @patch("requests.request")
 def test_currency_convert_error_code(mock_get):
-    """Неуспешный тест с расчетом суммы валюты"""
+    """Неуспешный тест с расчетом кодом ответа валюты"""
     mock_json_result = None
 
     mock_json = Mock(return_value=mock_json_result)

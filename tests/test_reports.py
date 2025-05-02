@@ -93,7 +93,8 @@ def transactions_list_test():
     return transactions
 
 
-def test_report_decorator(transactions_list_test):
+def test_spending_by_category_success(transactions_list_test):
+    '''Успеный тест создания отчета по категории'''
     df = pd.DataFrame(transactions_list_test)
     result = spending_by_category(df, "Каршеринг", "2018-01-04")
     result_json = result.to_json(orient="records", force_ascii=False)
@@ -101,7 +102,8 @@ def test_report_decorator(transactions_list_test):
     assert result_json == expected
 
 
-def test_report_decorator_t(transactions_list_test):
+def test_report_decorator_success(transactions_list_test):
+    '''Успеный тест записи отчета в файл'''
     df = pd.DataFrame(transactions_list_test)
 
     @report_decorator("ФАЙЛ")
