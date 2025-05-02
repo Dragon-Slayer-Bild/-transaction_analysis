@@ -11,23 +11,34 @@
 - [Команда проекта](#команда-проекта)
 
 ## Технологии
-- [GatsbyJS](https://www.gatsbyjs.com/)
-- [TypeScript](https://www.typescriptlang.org/)
-- ...
+- pytest
+- datetime
+- git
+- os
+- pandas
 
 ## Использование
 Расскажите как установить и использовать ваш проект, покажите пример кода:
 
-Установите npm-пакет с помощью команды:
+Установите необходимые библиотеки с помощью команды:
 ```sh
-$ npm i your-awesome-plugin-name
+$ poetry init
 ```
-
-И добавьте в свой проект:
-```typescript
-import { hi } from "your-awesome-plugin-name";
-
-hi(); // Выведет в консоль "Привет!"
+```sh
+$ poetry add --group lint flake8
+```
+```sh
+$ poetry add --group lint mypy
+```
+```sh
+$ poetry add --group lint black
+```
+```sh
+$ poetry add --group lint isort
+```
+```sh
+$ git init
+```
 ```
 
 ## Разработка
