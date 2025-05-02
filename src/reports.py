@@ -7,6 +7,7 @@ from typing import Optional
 
 import pandas as pd
 
+# Настраиваем логирование
 logger = logging.getLogger("reports")
 logger.setLevel(logging.INFO)
 file_handler = logging.FileHandler(
@@ -44,13 +45,13 @@ def report_decorator(filename: Optional[str] = None):
                 )
 
             try:
-
+                # Преобразуем в JSON строку
                 if isinstance(result, pd.DataFrame):
-                    result_for_json = result.to_json(orient="records", force_ascii=False)  # Преобразуем в JSON строку
+                    result_for_json = result.to_json(orient="records", force_ascii=False)
                 else:
                     result_for_json = result
 
-                # Записываем результата в файл (формат JSON)
+                # Записываем результат в файл
                 with open(file_path, "w", encoding="utf-8") as f:
                     if isinstance(result_for_json, str):
                         f.write(result_for_json)
@@ -80,19 +81,19 @@ def spending_by_category(transactions: pd.DataFrame, category: str, date: Option
         # Вычисляем дату начала периода (три месяца назад)
         start_date = report_date - datetime.timedelta(days=90)
 
-        # Преобразуюм столбец "Дата операции" в datetime.date
+        # Преобразуем столбец "Дата операции" в datetime.date
         transactions["Дата операции"] = pd.to_datetime(
             transactions["Дата операции"], format="%d.%m.%Y %H:%M:%S"
         ).dt.date
 
-        # Фильтрую транзакции по категории и дате
+        # Фильтрем транзакции по категории и дате
         filtered_transactions = transactions[
             (transactions["Категория"] == category)
             & (transactions["Дата операции"] >= start_date)
             & (transactions["Дата операции"] <= report_date)
         ]
 
-        # Группирую по категории и суммируем траты
+        # Группирем по категории и суммируем траты
         spending = filtered_transactions.groupby("Категория")["Сумма операции"].sum().reset_index()
 
         logger.info(f"Отчет 'spending_by_category' для категории '{category}' сформирован.")

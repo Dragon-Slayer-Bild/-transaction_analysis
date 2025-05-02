@@ -2,6 +2,7 @@ import json
 import logging
 import re
 
+# Настраиваем логирование
 logger = logging.getLogger("transaction_search")
 logger.setLevel(logging.INFO)
 file_handler = logging.FileHandler(

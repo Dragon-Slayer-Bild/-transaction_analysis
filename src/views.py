@@ -1,12 +1,23 @@
 import json
 
-from src.utils import (card_list, currency_list, file_reader, filter_transactions_in_data, greeting, stock_price,
-                       top_transactions)
+from src.utils import (
+    card_list,
+    currency_list,
+    file_reader,
+    filter_transactions_in_data,
+    greeting,
+    stock_price,
+    top_transactions,
+)
 
 
-def main_page_info():
+def main_page_info(date_search):
     """Функция для формирования Главной страницы"""
-    transactions_list = filter_transactions_in_data(file_reader(), "01.01.2020")
+
+    # Вызываем функцию с чтением списка транзакций из файла и функцию с фильтрацией по дате
+    transactions_list = filter_transactions_in_data(file_reader(), date_search)
+
+    # Вызываем функции для формирования главной страницы
     main_info = json.dumps(
         {
             "greeting": greeting(),
